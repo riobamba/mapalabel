@@ -5,18 +5,22 @@
  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
  <title>MarkerWithLabel Example</title>
  <style type="text/css">
+ 
+ @import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
+ 
    .label {
-  border-radius: 23px;
-  background-color: white;
-  border:1px solid #99FF00;
-  line-height: 23px;
-  width: 23px;
-  height: 23px;
+  border-radius: 20px;
+  background-color: #660099;
+  box-shadow: 0 3px 3px rgba(0,0,0,.1);
+  color: white;
+  /*border:2px solid black;*/
+  line-height: 20px;
+  width: 20px;
+  height: 20;
   padding: 0px;
-  border-width: 4px;
-  font-family: "Arial";
-  font-weight: bold;
-  font-size: 7px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 8px;
   text-align: center;
    }
     .labels {
@@ -59,31 +63,66 @@
       scale: 0, //tamaño 0
     },
        map: map,
-       labelContent: "PTGC",
+       labelContent: "RUS2",
        labelAnchor: new google.maps.Point(13, 13),
        labelClass: "label", // the CSS class for the label
        //labelStyle: {opacity: 0.75}
      });
 
-     // var marker2 = new MarkerWithLabel({
-       // position: new google.maps.LatLng(49.475, -123.84),
-       // icon: {
-      // path: google.maps.SymbolPath.CIRCLE,
-      // scale: 0, //tamaño 0
-    // },
-    // map: map,
-    // labelContent: "BAR2",
-    // labelAnchor: new google.maps.Point(10, 10),
-    // labelClass: "labels", // the CSS class for the label
-     // });
+     var marker2 = new MarkerWithLabel({
+       position: new google.maps.LatLng(4.632427, -74.214469),
+       icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 0, //tamaño 0
+    },
+    map: map,
+    labelContent: "BAR2",
+    labelAnchor: new google.maps.Point(10, 10),
+    labelClass: "label", // the CSS class for the label
+     });
 
-     var iw1 = new google.maps.InfoWindow({
-       content: "Home For Sale"
+     var marker3 = new MarkerWithLabel({
+       position: new google.maps.LatLng(3.632427, -72.214469),
+       icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 0, //tamaño 0
+    },
+    map: map,
+    labelContent: "BAR2",
+    labelAnchor: new google.maps.Point(10, 10),
+    labelClass: "label", // the CSS class for the label
      });
-     var iw2 = new google.maps.InfoWindow({
-       content: "Another Home For Sale"
+     
+     var marker4 = new MarkerWithLabel({
+       position: new google.maps.LatLng(4.832427, -73.214469),
+       icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 0, //tamaño 0
+    },
+    map: map,
+    labelContent: "BAR2",
+    labelAnchor: new google.maps.Point(10, 10),
+    labelClass: "label", // the CSS class for the label
      });
-     google.maps.event.addListener(marker1, "click", function (e) { iw1.open(map, this); });
+     
+     var marker5 = new MarkerWithLabel({
+       position: new google.maps.LatLng(1.632427, -71.214469),
+       icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 0, //tamaño 0
+    },
+    map: map,
+    labelContent: "BAR2",
+    labelAnchor: new google.maps.Point(10, 10),
+    labelClass: "label", // the CSS class for the label
+     });
+     //var iw1 = new google.maps.InfoWindow({
+       // content: "Home For Sale"
+     // });
+     // var iw2 = new google.maps.InfoWindow({
+       // content: "Another Home For Sale"
+     // });
+     // google.maps.event.addListener(marker1, "click", function (e) { iw1.open(map, this); });
      // google.maps.event.addListener(marker2, "click", function (e) { iw2.open(map, this); });
    }
  </script>
