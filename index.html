@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ <title>MarkerWithLabel Example</title>
+ <style type="text/css">
+   .label {
+  border-radius: 23px;
+  background-color: white;
+  border:1px solid #99FF00;
+  line-height: 23px;
+  width: 23px;
+  height: 23px;
+  padding: 0px;
+  border-width: 4px;
+  font-family: "Arial";
+  font-weight: bold;
+  font-size: 7px;
+  text-align: center;
+   }
+    .labels {
+  box-sizing:border-box;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  padding: 0px;
+     font-size: 10px;
+     text-align: center;
+  background: #05F24C;
+  box-shadow: 2px 2px 4px #333;
+  border:2px solid #346FF7;
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  /*-webkit-animation: pulse 1s ease 1s 3;
+  -moz-animation: pulse 1s ease 1s 3;*/
+  /*animation: pulse 1s ease 1s 3;*/
+}
+
+
+   
+ </style>
+ <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3"></script>
+ <script type="text/javascript" src="js/markerwithlabel.js"></script>
+ <script type="text/javascript">
+   function initMap() {
+     var latLng = new google.maps.LatLng(4.632427, -74.214469);
+     var homeLatLng = new google.maps.LatLng(6.750051, -72.909589);
+
+     var map = new google.maps.Map(document.getElementById('map_canvas'), {
+       zoom: 6,
+       center: latLng,
+       mapTypeId: google.maps.MapTypeId.ROADMAP
+     });
+
+     var marker1 = new MarkerWithLabel({
+       position: homeLatLng,
+         icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 0, //tamaño 0
+    },
+       map: map,
+       labelContent: "PTGC",
+       labelAnchor: new google.maps.Point(13, 13),
+       labelClass: "label", // the CSS class for the label
+       //labelStyle: {opacity: 0.75}
+     });
+
+     // var marker2 = new MarkerWithLabel({
+       // position: new google.maps.LatLng(49.475, -123.84),
+       // icon: {
+      // path: google.maps.SymbolPath.CIRCLE,
+      // scale: 0, //tamaño 0
+    // },
+    // map: map,
+    // labelContent: "BAR2",
+    // labelAnchor: new google.maps.Point(10, 10),
+    // labelClass: "labels", // the CSS class for the label
+     // });
+
+     var iw1 = new google.maps.InfoWindow({
+       content: "Home For Sale"
+     });
+     var iw2 = new google.maps.InfoWindow({
+       content: "Another Home For Sale"
+     });
+     google.maps.event.addListener(marker1, "click", function (e) { iw1.open(map, this); });
+     // google.maps.event.addListener(marker2, "click", function (e) { iw2.open(map, this); });
+   }
+ </script>
+</head>
+<body onload="initMap()">
+<p>A basic example of markers with labels. Note that an information window appears whether you
+click the marker portion or the label portion of the MarkerWithLabel. The two markers shown here
+are both draggable so you can easily verify that markers and labels overlap as expected.</p>
+ <div id="map_canvas" style="height: 400px; width: 100%;"></div>
+ <div id="log"></div>
+</body>
+</html>
