@@ -52,10 +52,10 @@ img {
   vertical-align: middle;
   border: 0;
 }
-#map_canvas img,
+/*#map_canvas img,
 .google-maps img {
   max-width: none;
-}
+}*/
 button,
 input,
 select,

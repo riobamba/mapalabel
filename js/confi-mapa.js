@@ -1,97 +1,70 @@
-// function initMap() {
-	// var latLng = new google.maps.LatLng(4.632427, -74.214469);
-	// var homeLatLng = new google.maps.LatLng(6.750051, -72.909589);
-// 
-	// var map = new google.maps.Map(document.getElementById('map_canvas'), {
-		// zoom : 6,
-		// center : latLng,
-		// mapTypeId : google.maps.MapTypeId.ROADMAP
-	// });
-// 
-	// var marker1 = new MarkerWithLabel({
-		// position : homeLatLng,
-		// icon : {
-			// path : google.maps.SymbolPath.CIRCLE,
-			// scale : 0, //tamaño 0
-		// },
-		// map : map,
-		// labelContent : "RUS2",
-		// labelAnchor : new google.maps.Point(13, 13),
-		// labelClass : "label", // the CSS class for the label
-		// //labelStyle: {opacity: 0.75}
-	// });
-// 
-	// var marker2 = new MarkerWithLabel({
-		// position : new google.maps.LatLng(4.632427, -74.214469),
-		// icon : {
-			// path : google.maps.SymbolPath.CIRCLE,
-			// scale : 0, //tamaño 0
-		// },
-		// map : map,
-		// labelContent : "BAR2",
-		// labelAnchor : new google.maps.Point(10, 10),
-		// labelClass : "label", // the CSS class for the label
-	// });
-// 
-	// var marker3 = new MarkerWithLabel({
-		// position : new google.maps.LatLng(3.632427, -72.214469),
-		// icon : {
-			// path : google.maps.SymbolPath.CIRCLE,
-			// scale : 0, //tamaño 0
-		// },
-		// map : map,
-		// labelContent : "BAR2",
-		// labelAnchor : new google.maps.Point(10, 10),
-		// labelClass : "label", // the CSS class for the label
-	// });
-// 
-	// var marker4 = new MarkerWithLabel({
-		// position : new google.maps.LatLng(4.832427, -73.214469),
-		// icon : {
-			// path : google.maps.SymbolPath.CIRCLE,
-			// scale : 0, //tamaño 0
-		// },
-		// map : map,
-		// labelContent : "BAR2",
-		// labelAnchor : new google.maps.Point(10, 10),
-		// labelClass : "label", // the CSS class for the label
-	// });
-// 
-	// var marker5 = new MarkerWithLabel({
-		// position : new google.maps.LatLng(1.632427, -71.214469),
-		// icon : {
-			// path : google.maps.SymbolPath.CIRCLE,
-			// scale : 0, //tamaño 0
-		// },
-		// map : map,
-		// labelContent : "BAR2",
-		// labelAnchor : new google.maps.Point(10, 10),
-		// labelClass : "label", // the CSS class for the label
-	// });
-// 
-// }
-
-
-var url;
-var tabla;
-var cadena;
-var network;
-var idnetwork;
-var idstation;
-var codeNetwork;
-var nameStation;
-var codigostation;
-var eventos = new Array();
-var canalConsulta = new Array();
-var stringCanales = "";
-var dialog;
+			var url;
+			var tabla;
+			var cadena;
+			var network;
+			var idnetwork;
+			var idstation;
+			var codeNetwork;
+			var nameStation;
+			var codigostation;
+			var eventos = new Array();
+			var canalConsulta=new Array();
+			var stringCanales="";
+			var dialog;
+			var estaciones= new Array();
 
 function initMap() {
 
 	iniciarMapa();
+	crearMenu();
 
 }
 
+//  ++++++++++Opciones Flotantes+++++++++++++++++++++++++++++++++
+			//tener en cuenta
+			//funcion crearMenu();
+			//aumentar la booleana en el array del mapa
+			//hacer estaciones global
+			//cambiar el id pigture por flotante y el css
+			
+
+				function redSeleccionada(net) {
+					//alert(net)
+					for (var i = 0, length = estaciones.length; i < length; i++) {
+						if(estaciones[i].tipo==net){
+							if (estaciones[i].visible) {
+								estaciones[i].setVisible(false)
+								estaciones[i].visible=false;
+							} else{
+								estaciones[i].setVisible(true)
+								estaciones[i].visible=true;
+							};
+						}else{
+							
+						}
+					
+					}
+					}
+
+				function crearMenu() {
+					var opciones=""
+					 $.getJSON('php/data.php', function(data) {
+						for (var i=0; i < data.Inventory.network.length; i++) {
+							var env="\'"+data.Inventory.network[i].code+"\'";
+							var desc=data.Inventory.network[i].description;
+							if (desc.length>10) {
+								//desc=desc.substring(0,25)+"..."
+							};	
+						 opciones=opciones+'<input type="checkbox" onchange="redSeleccionada('+env+')" checked>'+
+											'<span class="check"></span>'+
+											'<span class="caption"><small>'+desc+'</small></span><br>';
+						};
+						$( "#menuflotante" ).html(opciones);
+					})
+					
+					
+				}
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function solicitarXml() {
 	var dialog10 = $("#dialog10").data('dialog');
@@ -140,91 +113,90 @@ function solicitarXml() {
 }
 
 			
-
-function canalSeleccionado(cl) {
-	var repetido = false;
-	for (var i = 0; i < canalConsulta.length; i++) {
-		if (canalConsulta[i] == cl) {
-			canalConsulta.splice(i, 1);
-			repetido = true;
+	function canalSeleccionado(cl){
+		var repetido=false;
+		for (var i=0; i < canalConsulta.length; i++) {
+		  if(canalConsulta[i]==cl){
+		  	canalConsulta.splice(i,1);
+		  	repetido = true;
+		  }
+		};
+		if (repetido==false){
+			canalConsulta.push(cl)
 		}
-	};
-	if (repetido == false) {
-		canalConsulta.push(cl)
+		stringCanales="";
+		for (var i=0; i < canalConsulta.length; i++) {
+		 stringCanales=stringCanales+canalConsulta[i]+"&";
+		};
+		stringCanales=stringCanales.substring(0, stringCanales.length-1);	
 	}
-	stringCanales = "";
-	for (var i = 0; i < canalConsulta.length; i++) {
-		stringCanales = stringCanales + canalConsulta[i] + "&";
-	};
-	stringCanales = stringCanales.substring(0, stringCanales.length - 1);
-}
-
-
-function showDialog() {
-
-	var da = network.Inventory.network[idnetwork].station;
-	var sl = da[idstation].sensorLocation;
-	var canal = "";
-	var conta = 0;
-	var col = 0;
-	for (var k = 0; k < sl.length; k++) {
-		var st = sl[k].stream;
-		var locali = sl[k].code;
-		var aux = "";
-		for (var m = 0; m < st.length; m++) {
-			var cl = st[m].code
-			var env = "\'" + cl + "\'";
-			aux=aux+'<label class="input-control checkbox small-check">'+
+	
+	function showDialog(){
+						
+	var da=network.Inventory.network[idnetwork].station;
+	 var sl=da[idstation].sensorLocation;
+	 var canal="";
+	 var conta=0;
+	 var col=0;		
+	 for (var k=0; k < sl.length; k++) {
+	   var st=sl[k].stream;
+	   var locali=sl[k].code;	
+	   var aux="";		   
+					for (var m=0; m < st.length; m++) {
+					  var cl=st[m].code
+					  var env="\'"+cl+"\'";				  
+					  aux=aux+'<label class="input-control checkbox small-check">'+
 			'<input type="checkbox" id="'+cl+'" onchange="canalSeleccionado('+env+')">'+
 			'<span class="check"></span> <span class="caption">'+locali+'.'+cl+'</span> </label><p>';
+			
 			conta++;
-
-			if (conta == 3) {
-				canal = canal + ' <div class="cell">' + aux + '</div>';
-				conta = 0;
-				aux = "";
+			
+			if (conta==3) {
+				canal=canal+' <div class="cell">'+aux+'</div>';
+				conta=0;
+				aux="";
 			};
-
-		};
-		var col = col + m;
-
-	};
-	canal = '<div class="grid"><div class="row cells' + (col / 3) + '">' + canal;
-	canal = canal + '</div></div>';
-
-	dialog = $("#dialog9").data('dialog');
-
-	if (!dialog.element.data('opened')) {
-		$("#station").html("<h3>" + codigostation + ", " + nameStation + "</h3>");
-		$("#componentes").html(canal);
-		dialog.open();
-	} else {
-		dialog.close();
-	}
+			
+					};
+					var col=col+m;
+					
+	 };
+	 canal='<div class="grid"><div class="row cells'+(col/3)+'">'+canal;
+	 canal=canal+'</div></div>';
+	 
+    dialog = $("#dialog9").data('dialog');
+    
+    if (!dialog.element.data('opened')) {
+    	$( "#station" ).html("<h3>"+codigostation+", "+nameStation+"</h3>");
+    	$( "#componentes" ).html(canal);
+        dialog.open();
+    } else {
+        dialog.close();
+    }
 }
-
 			
 
-
-function construirTabla(description, codigo, longitud, latitud, elevacion, data, i, j) {
-	var da = data.Inventory.network[i].station;
-	var sl = da[j].sensorLocation;
-	nameStation = da[j].description;
-	codeNetwork = data.Inventory.network[i].code;
-	var canal = "";
-	codigostation = codigo;
-	network = data;
-	idnetwork = i;
-	idstation = j;
-
-	for (var k = 0; k < sl.length; k++) {
-		var st = sl[k].stream;
-		var locali = sl[k].code;
-		for (var m = 0; m < st.length; m++) {
-			var cl = st[m].code
-			canal = canal + locali + "." + cl + " - "
-		};
-	};
+			function construirTabla(description,codigo,longitud,latitud,elevacion,data,i,j) {
+			 var da=data.Inventory.network[i].station;
+			 var sl=da[j].sensorLocation;
+			 nameStation=da[j].description;
+			 codeNetwork=data.Inventory.network[i].code;
+			 var canal="";
+			 codigostation=codigo;
+			 network=data;
+			 idnetwork=i;
+			 idstation=j;
+			
+			 for (var k=0; k < sl.length; k++) {
+			   var st=sl[k].stream;
+			   var locali=sl[k].code;
+							for (var m=0; m < st.length; m++) {
+							  var cl=st[m].code
+							  canal=canal+locali+"."+cl+" - "
+							};
+			 };
+							
+							
 			canal= canal.substring(0, canal.length-2);			
 				tabla='<table class="table striped hovered" id="main_table_demo">'+
 						'<thead>		  '+
@@ -259,17 +231,15 @@ function construirTabla(description, codigo, longitud, latitud, elevacion, data,
 						'</tbody>         '+
 						'</table>         '+						
 						'<button class="button success small-button" onclick="showDialog()">Descargar información de respuesta</button>'
-					return tabla;  
-}
-
+					return tabla;       
+			}
 
 
 function iniciarMapa() {
 	var infoWindow = new google.maps.InfoWindow();
-	var estaciones = new Array();
 	var estacion = "";
 	var map = new google.maps.Map(document.getElementById('map_canvas'), {
-		zoom : 5,
+		zoom : 6,
 		center : {
 			lat : 4.542903,
 			lng : -73.569119
@@ -283,9 +253,21 @@ function iniciarMapa() {
 		    latitud,
 		    elevacion,
 		    canales;
-		for (l in data.Inventory.network) {
+		for ( var l=0; l < data.Inventory.network.length; l++) {
 			var dataEstacion = data.Inventory.network[l].station;
-			for (j in dataEstacion ) {
+			for (var j=0; j < dataEstacion.length; j++) {
+				var label="";
+				if (data.Inventory.network[l].code=="CM") {
+					label="label"
+				} else if (data.Inventory.network[l].code=="OM"){
+					label="label1"
+				}else if (data.Inventory.network[l].code=="PP"){
+					label="label2"
+				}else if (data.Inventory.network[l].code=="OP"){
+					label="label3"
+				}else{
+					label="label4"
+				}
 
 				estacion = new MarkerWithLabel({
 					position : new google.maps.LatLng(dataEstacion[j].latitude, dataEstacion[j].longitude),
@@ -295,10 +277,11 @@ function iniciarMapa() {
 					},
 					map : map,
 					title : dataEstacion[j].code,
+					visible:true,
 					labelContent : dataEstacion[j].code,
 					tipo : data.Inventory.network[l].code,
 					labelAnchor : new google.maps.Point(10, 10),
-					labelClass : "label", // the CSS class for the label
+					labelClass : label
 				});
 
 				estaciones.push(estacion);
